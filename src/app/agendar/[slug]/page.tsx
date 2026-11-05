@@ -19,7 +19,7 @@ export default async function PublicBookingPage({
   }
 
   return (
-    <div className="min-h-svh bg-zinc-50 px-4 py-8 dark:bg-zinc-950">
+    <div className="min-h-svh bg-stone-50 px-4 py-8 dark:bg-stone-950">
       <BookingWizard
         salon={salon}
         services={services}

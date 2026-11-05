@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { Menu } from "lucide-react"
 
+import { ThemeToggle } from "@/components/theme-toggle"
 import { MOCK_PROFILES, MOCK_SALON } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 import type { Profile, Salon, UserRole } from "@/types"
@@ -63,7 +64,7 @@ export function DashboardShell({
   }
 
   return (
-    <div className="flex min-h-svh bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+    <div className="flex min-h-svh bg-stone-50 text-stone-900 transition-colors dark:bg-stone-950 dark:text-stone-50">
       <div className="hidden lg:block">
         <Sidebar
           userRole={role}
@@ -77,7 +78,7 @@ export function DashboardShell({
         <div className="fixed inset-0 z-40 lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-zinc-950/40"
+            className="absolute inset-0 bg-stone-950/40"
             onClick={() => setMobileOpen(false)}
             aria-label="Fechar menu"
           />
@@ -93,18 +94,21 @@ export function DashboardShell({
       ) : null}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center gap-3 border-b border-zinc-200 bg-white/70 px-4 py-3 backdrop-blur lg:hidden dark:border-zinc-800 dark:bg-zinc-950/70">
-          <button
-            type="button"
-            onClick={() => setMobileOpen(true)}
-            className={cn(
-              "inline-flex size-9 items-center justify-center rounded-lg border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
-            )}
-            aria-label="Abrir menu"
-          >
-            <Menu className="size-4" />
-          </button>
-          <p className="text-sm font-semibold">{salon.name}</p>
+        <header className="flex items-center justify-between gap-3 border-b border-stone-200 bg-white/80 px-4 py-3 backdrop-blur lg:hidden dark:border-stone-800 dark:bg-stone-950/80">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className={cn(
+                "inline-flex size-9 items-center justify-center rounded-lg border border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-900"
+              )}
+              aria-label="Abrir menu"
+            >
+              <Menu className="size-4" />
+            </button>
+            <p className="text-sm font-semibold">{salon.name}</p>
+          </div>
+          <ThemeToggle />
         </header>
         <main className="flex-1 p-4 md:p-8">{children}</main>
       </div>

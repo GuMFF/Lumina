@@ -30,11 +30,11 @@ export function TeamView({ staff, initialHours }: TeamViewProps) {
   return (
     <div className="space-y-6">
       <header>
-        <p className="text-sm font-medium text-violet-600">Equipe</p>
+        <p className="text-sm font-medium text-rose-700 dark:text-rose-400">Equipe</p>
         <h1 className="text-2xl font-semibold tracking-tight">
           Prestadores e horários
         </h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-stone-500">
           Ajuste rapidamente a jornada de cada profissional.
         </p>
       </header>
@@ -49,39 +49,39 @@ export function TeamView({ staff, initialHours }: TeamViewProps) {
               className={cn(
                 "flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-colors",
                 selectedId === member.id
-                  ? "border-violet-300 bg-violet-50 dark:border-violet-800 dark:bg-violet-950/40"
-                  : "border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900"
+                  ? "border-rose-300 bg-rose-50/70 dark:border-rose-800 dark:bg-rose-950/40"
+                  : "border-stone-200 bg-white hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-900"
               )}
             >
-              <span className="flex size-10 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800">
+              <span className="flex size-10 items-center justify-center rounded-full bg-amber-100/80 text-rose-700 dark:bg-stone-800 dark:text-amber-300">
                 <UserRound className="size-4" />
               </span>
               <span>
                 <span className="block text-sm font-medium">{member.name}</span>
-                <span className="block text-xs text-zinc-500">{member.email}</span>
+                <span className="block text-xs text-stone-500">{member.email}</span>
               </span>
             </button>
           ))}
         </div>
 
-        <div className="rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900">
           <div className="mb-4 flex items-center gap-2 text-sm font-medium">
-            <Clock3 className="size-4 text-violet-600" />
+            <Clock3 className="size-4 text-amber-600" />
             Grade semanal
           </div>
           <div className="space-y-3">
             {selectedHours.length === 0 ? (
-              <p className="text-sm text-zinc-500">
+              <p className="text-sm text-stone-500">
                 Este profissional ainda não possui horários cadastrados.
               </p>
             ) : (
               selectedHours.map((item) => (
                 <div
                   key={item.id}
-                  className="grid gap-2 rounded-xl bg-zinc-50 p-3 text-sm dark:bg-zinc-950 md:grid-cols-[70px_1fr_1fr]"
+                  className="grid gap-2 rounded-xl bg-stone-50 p-3 text-sm dark:bg-stone-950 md:grid-cols-[70px_1fr_1fr]"
                 >
                   <p className="pt-2 font-medium">{weekdayLabel(item.day_of_week)}</p>
-                  <label className="grid gap-1 text-xs text-zinc-500">
+                  <label className="grid gap-1 text-xs text-stone-500">
                     Expediente
                     <span className="flex gap-2">
                       <input
@@ -90,7 +90,7 @@ export function TeamView({ staff, initialHours }: TeamViewProps) {
                         onChange={(event) =>
                           updateHour(item.id, { start_time: event.target.value })
                         }
-                        className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                        className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-stone-900 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-50"
                       />
                       <input
                         type="time"
@@ -98,11 +98,11 @@ export function TeamView({ staff, initialHours }: TeamViewProps) {
                         onChange={(event) =>
                           updateHour(item.id, { end_time: event.target.value })
                         }
-                        className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                        className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-stone-900 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-50"
                       />
                     </span>
                   </label>
-                  <label className="grid gap-1 text-xs text-zinc-500">
+                  <label className="grid gap-1 text-xs text-stone-500">
                     Pausa
                     <span className="flex gap-2">
                       <input
@@ -113,7 +113,7 @@ export function TeamView({ staff, initialHours }: TeamViewProps) {
                             pause_start: event.target.value || null,
                           })
                         }
-                        className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                        className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-stone-900 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-50"
                       />
                       <input
                         type="time"
@@ -123,7 +123,7 @@ export function TeamView({ staff, initialHours }: TeamViewProps) {
                             pause_end: event.target.value || null,
                           })
                         }
-                        className="w-full rounded-lg border border-zinc-200 bg-white px-2 py-1.5 text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50"
+                        className="w-full rounded-lg border border-stone-200 bg-white px-2 py-1.5 text-stone-900 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-50"
                       />
                     </span>
                   </label>

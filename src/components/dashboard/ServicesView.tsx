@@ -74,23 +74,23 @@ export function ServicesView({ salonId, initialServices }: ServicesViewProps) {
   return (
     <div className="space-y-6">
       <header>
-        <p className="text-sm font-medium text-violet-600">Serviços</p>
+        <p className="text-sm font-medium text-rose-700 dark:text-rose-400">Serviços</p>
         <h1 className="text-2xl font-semibold tracking-tight">Catálogo do salão</h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-stone-500">
           Cadastre nome, preço e duração para os agendamentos públicos.
         </p>
       </header>
 
       <form
         onSubmit={handleSubmit}
-        className="grid gap-3 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900 md:grid-cols-4"
+        className="grid gap-3 rounded-2xl border border-stone-200 bg-white p-4 dark:border-stone-800 dark:bg-stone-900 md:grid-cols-4"
       >
         <input
           required
           value={form.title}
           onChange={(event) => setForm({ ...form, title: event.target.value })}
           placeholder="Nome do serviço"
-          className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm outline-none ring-violet-500 focus:ring-2 dark:border-zinc-700 dark:bg-zinc-950"
+          className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2 text-sm outline-none ring-rose-600 focus:ring-2 dark:border-stone-700 dark:bg-stone-950"
         />
         <input
           required
@@ -100,7 +100,7 @@ export function ServicesView({ salonId, initialServices }: ServicesViewProps) {
           value={form.price}
           onChange={(event) => setForm({ ...form, price: event.target.value })}
           placeholder="Preço (R$)"
-          className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm outline-none ring-violet-500 focus:ring-2 dark:border-zinc-700 dark:bg-zinc-950"
+          className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2 text-sm outline-none ring-rose-600 focus:ring-2 dark:border-stone-700 dark:bg-stone-950"
         />
         <input
           required
@@ -112,12 +112,12 @@ export function ServicesView({ salonId, initialServices }: ServicesViewProps) {
             setForm({ ...form, duration_minutes: event.target.value })
           }
           placeholder="Duração (min)"
-          className="rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm outline-none ring-violet-500 focus:ring-2 dark:border-zinc-700 dark:bg-zinc-950"
+          className="rounded-xl border border-stone-200 bg-stone-50 px-3 py-2 text-sm outline-none ring-rose-600 focus:ring-2 dark:border-stone-700 dark:bg-stone-950"
         />
         <button
           type="submit"
           disabled={saving}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 px-3 py-2 text-sm font-medium text-white hover:bg-violet-500 disabled:opacity-60"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-rose-700 px-3 py-2 text-sm font-medium text-white hover:bg-rose-600 disabled:opacity-60"
         >
           <Plus className="size-4" />
           {saving ? "Salvando..." : "Adicionar"}
@@ -128,13 +128,13 @@ export function ServicesView({ salonId, initialServices }: ServicesViewProps) {
             setForm({ ...form, description: event.target.value })
           }
           placeholder="Descrição (opcional)"
-          className="min-h-20 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm outline-none ring-violet-500 focus:ring-2 md:col-span-4 dark:border-zinc-700 dark:bg-zinc-950"
+          className="min-h-20 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2 text-sm outline-none ring-rose-600 focus:ring-2 md:col-span-4 dark:border-stone-700 dark:bg-stone-950"
         />
       </form>
 
-      <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-900">
         <table className="w-full text-left text-sm">
-          <thead className="bg-zinc-50 text-xs uppercase tracking-wide text-zinc-500 dark:bg-zinc-950">
+          <thead className="bg-amber-50/60 text-xs uppercase tracking-wide text-stone-600 dark:bg-stone-950 dark:text-stone-400">
             <tr>
               <th className="px-4 py-3 font-medium">Serviço</th>
               <th className="px-4 py-3 font-medium">Preço</th>
@@ -146,19 +146,21 @@ export function ServicesView({ salonId, initialServices }: ServicesViewProps) {
             {services.map((service) => (
               <tr
                 key={service.id}
-                className="border-t border-zinc-100 dark:border-zinc-800"
+                className="border-t border-stone-100 dark:border-stone-800"
               >
                 <td className="px-4 py-3">
                   <p className="font-medium">{service.title}</p>
-                  <p className="text-xs text-zinc-500">{service.description}</p>
+                  <p className="text-xs text-stone-500">{service.description}</p>
                 </td>
-                <td className="px-4 py-3">{formatCurrency(service.price)}</td>
+                <td className="px-4 py-3 font-medium text-amber-800 dark:text-amber-300">
+                  {formatCurrency(service.price)}
+                </td>
                 <td className="px-4 py-3">{service.duration_minutes} min</td>
                 <td className="px-4 py-3 text-right">
                   <button
                     type="button"
                     onClick={() => removeService(service.id)}
-                    className="inline-flex size-8 items-center justify-center rounded-lg text-zinc-400 hover:bg-rose-50 hover:text-rose-600"
+                    className="inline-flex size-8 items-center justify-center rounded-lg text-stone-400 hover:bg-rose-50 hover:text-rose-600"
                     aria-label={`Excluir ${service.title}`}
                   >
                     <Trash2 className="size-4" />
