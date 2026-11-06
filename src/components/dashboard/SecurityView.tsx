@@ -110,7 +110,7 @@ export function SecurityView() {
           <p className="text-sm font-medium text-rose-700 dark:text-rose-400">
             Segurança OWASP & Sessões
           </p>
-          <h1 className="text-2xl font-semibold tracking-tight">
+          <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
             Central de Autenticação e Auditoria
           </h1>
           <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
@@ -122,7 +122,7 @@ export function SecurityView() {
           {!user ? (
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 rounded-xl bg-rose-700 px-4 py-2 text-xs font-semibold text-white hover:bg-rose-600"
+              className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl bg-rose-700 px-4 py-2 text-xs font-semibold text-white hover:bg-rose-600 sm:w-auto"
             >
               <KeyRound className="size-4" />
               Fazer Login / Cadastrar
@@ -131,7 +131,7 @@ export function SecurityView() {
             <button
               type="button"
               onClick={handleLogout}
-              className="inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2 text-xs font-semibold text-stone-700 hover:bg-rose-50 hover:text-rose-700 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-200"
+              className="inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2 text-xs font-semibold text-stone-700 hover:bg-rose-50 hover:text-rose-700 sm:w-auto dark:border-stone-800 dark:bg-stone-900 dark:text-stone-200"
             >
               <LogOut className="size-4" />
               Encerrar Sessão
@@ -146,16 +146,16 @@ export function SecurityView() {
         </div>
       ) : null}
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <div className="space-y-4 rounded-2xl border border-stone-200 bg-white p-5 dark:border-stone-800 dark:bg-stone-900">
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-4 rounded-2xl border border-stone-200 bg-white p-4 sm:p-5 dark:border-stone-800 dark:bg-stone-900">
           <div className="flex items-center gap-2 text-sm font-semibold">
-            <ShieldCheck className="size-4 text-rose-700 dark:text-rose-400" />
-            Estado da Sessão (Cookies HttpOnly + SameSite=Strict)
+            <ShieldCheck className="size-4 shrink-0 text-rose-700 dark:text-rose-400" />
+            Estado da Sessão (Cookies HttpOnly)
           </div>
 
           {user ? (
             <div className="space-y-2 text-sm">
-              <p>
+              <p className="break-all">
                 <span className="text-stone-500">Usuário:</span>{" "}
                 <span className="font-medium">{user.name}</span> ({user.email})
               </p>
@@ -186,21 +186,21 @@ export function SecurityView() {
             </p>
           )}
 
-          <div className="flex flex-wrap gap-2 pt-2">
+          <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:flex-wrap">
             <button
               type="button"
               disabled={loading}
               onClick={handleRotateToken}
-              className="inline-flex items-center gap-2 rounded-xl bg-rose-700 px-3.5 py-2 text-xs font-medium text-white hover:bg-rose-600 disabled:opacity-60"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-rose-700 px-3.5 py-2 text-xs font-medium text-white hover:bg-rose-600 disabled:opacity-60"
             >
               <RefreshCw className="size-3.5" />
-              Rotacionar Refresh Token Agora
+              Rotacionar Refresh Token
             </button>
             <button
               type="button"
               disabled={loading}
               onClick={handleEnable2FA}
-              className="inline-flex items-center gap-2 rounded-xl border border-amber-300 bg-amber-50/80 px-3.5 py-2 text-xs font-medium text-stone-800 hover:bg-amber-100 dark:border-amber-800 dark:bg-stone-800 dark:text-stone-100"
+              className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-amber-300 bg-amber-50/80 px-3.5 py-2 text-xs font-medium text-stone-800 hover:bg-amber-100 dark:border-amber-800 dark:bg-stone-800 dark:text-stone-100"
             >
               <Smartphone className="size-3.5 text-amber-600" />
               Configurar 2FA (TOTP)
@@ -208,17 +208,17 @@ export function SecurityView() {
           </div>
         </div>
 
-        <div className="space-y-4 rounded-2xl border border-stone-200 bg-white p-5 dark:border-stone-800 dark:bg-stone-900">
+        <div className="space-y-4 rounded-2xl border border-stone-200 bg-white p-4 sm:p-5 dark:border-stone-800 dark:bg-stone-900">
           <div className="flex items-center gap-2 text-sm font-semibold">
-            <Smartphone className="size-4 text-amber-600" />
-            Autenticação de Dois Fatores (2FA / RFC 6238 TOTP)
+            <Smartphone className="size-4 shrink-0 text-amber-600" />
+            Autenticação de Dois Fatores (2FA / TOTP)
           </div>
           {totpSetup ? (
             <div className="flex flex-col items-center gap-3 sm:flex-row">
               <div className="rounded-xl bg-white p-3 ring-1 ring-stone-200">
                 <QRCodeSVG value={totpSetup.otpauthUrl} size={132} />
               </div>
-              <div className="space-y-1.5 text-xs">
+              <div className="space-y-1.5 text-center text-xs sm:text-left">
                 <p className="font-medium">
                   Escaneie no Google Authenticator ou Authy:
                 </p>
@@ -232,15 +232,15 @@ export function SecurityView() {
             </div>
           ) : (
             <p className="text-sm text-stone-500 dark:text-stone-400">
-              Clique em <strong>Configurar 2FA (TOTP)</strong> ao lado para gerar a chave secreta Base32 e o QR Code compatível com aplicativos autenticadores.
+              Clique em <strong>Configurar 2FA (TOTP)</strong> para gerar a chave secreta Base32 e o QR Code compatível com aplicativos autenticadores.
             </p>
           )}
         </div>
       </div>
 
-      <section className="rounded-2xl border border-stone-200 bg-white p-5 dark:border-stone-800 dark:bg-stone-900">
+      <section className="rounded-2xl border border-stone-200 bg-white p-4 sm:p-5 dark:border-stone-800 dark:bg-stone-900">
         <div className="mb-4 flex items-center gap-2 text-sm font-semibold">
-          <Activity className="size-4 text-rose-700 dark:text-rose-400" />
+          <Activity className="size-4 shrink-0 text-rose-700 dark:text-rose-400" />
           Logs de Auditoria de Segurança (Recentes)
         </div>
 
@@ -249,39 +249,66 @@ export function SecurityView() {
             Nenhum evento de segurança registrado ainda nesta sessão.
           </p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="border-b border-stone-200 text-stone-500 uppercase dark:border-stone-800">
-                <tr>
-                  <th className="py-2 pr-4">Evento</th>
-                  <th className="py-2 pr-4">IP</th>
-                  <th className="py-2 pr-4">Data / Hora</th>
-                  <th className="py-2">Metadados</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-stone-100 dark:divide-stone-800">
-                {auditLogs.map((log) => (
-                  <tr key={log.id}>
-                    <td className="py-2.5 pr-4 font-mono font-semibold text-rose-700 dark:text-amber-300">
+          <>
+            {/* Cards para Celular (md:hidden) */}
+            <div className="space-y-2.5 md:hidden">
+              {auditLogs.map((log) => (
+                <div
+                  key={log.id}
+                  className="rounded-xl border border-stone-200 bg-stone-50 p-3 text-xs dark:border-stone-800 dark:bg-stone-950"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono font-semibold text-rose-700 dark:text-amber-300">
                       {log.eventType}
-                    </td>
-                    <td className="py-2.5 pr-4 font-mono text-stone-600 dark:text-stone-400">
+                    </span>
+                    <span className="font-mono text-[11px] text-stone-500">
                       {log.ipAddress}
-                    </td>
-                    <td className="py-2.5 pr-4 text-stone-500">
-                      {new Date(log.createdAt).toLocaleString("pt-BR")}
-                    </td>
-                    <td className="py-2.5 font-mono text-[11px] text-stone-500">
-                      {JSON.stringify(log.metadata)}
-                    </td>
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[11px] text-stone-500">
+                    {new Date(log.createdAt).toLocaleString("pt-BR")}
+                  </p>
+                  <p className="mt-1 font-mono text-[10px] break-all text-stone-500">
+                    {JSON.stringify(log.metadata)}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Tabela para Tablet/Desktop (hidden md:block) */}
+            <div className="hidden overflow-x-auto md:block">
+              <table className="w-full text-left text-xs">
+                <thead className="border-b border-stone-200 text-stone-500 uppercase dark:border-stone-800">
+                  <tr>
+                    <th className="py-2 pr-4">Evento</th>
+                    <th className="py-2 pr-4">IP</th>
+                    <th className="py-2 pr-4">Data / Hora</th>
+                    <th className="py-2">Metadados</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-stone-100 dark:divide-stone-800">
+                  {auditLogs.map((log) => (
+                    <tr key={log.id}>
+                      <td className="py-2.5 pr-4 font-mono font-semibold text-rose-700 dark:text-amber-300">
+                        {log.eventType}
+                      </td>
+                      <td className="py-2.5 pr-4 font-mono text-stone-600 dark:text-stone-400">
+                        {log.ipAddress}
+                      </td>
+                      <td className="py-2.5 pr-4 text-stone-500">
+                        {new Date(log.createdAt).toLocaleString("pt-BR")}
+                      </td>
+                      <td className="py-2.5 font-mono text-[11px] text-stone-500">
+                        {JSON.stringify(log.metadata)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </section>
     </div>
   )
 }
-

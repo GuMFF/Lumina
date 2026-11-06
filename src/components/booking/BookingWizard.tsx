@@ -213,12 +213,23 @@ export function BookingWizard({
                   : "border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-900"
               )}
             >
-              <span className="flex size-10 items-center justify-center rounded-full bg-amber-100/80 text-rose-700 dark:bg-stone-800 dark:text-amber-300">
-                <UserRound className="size-4" />
+              <span className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-amber-100/80 text-rose-700 dark:bg-stone-800 dark:text-amber-300">
+                {member.avatar_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={member.avatar_url}
+                    alt={member.name}
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  <UserRound className="size-4" />
+                )}
               </span>
               <span>
                 <span className="block font-medium">{member.name}</span>
-                <span className="block text-sm text-stone-500 dark:text-stone-400">Prestador</span>
+                <span className="block text-sm text-stone-500 dark:text-stone-400">
+                  {member.specialty ?? "Prestador"}
+                </span>
               </span>
             </button>
           ))}
@@ -259,7 +270,7 @@ export function BookingWizard({
               Sem horários livres neste dia. Escolha outra data.
             </p>
           ) : (
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4">
               {slotOptions.map((option) => {
                 const selected =
                   slot === option.time &&

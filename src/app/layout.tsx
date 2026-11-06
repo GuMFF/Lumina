@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 
 import { ThemeProvider } from "@/components/theme-provider"
@@ -12,6 +12,13 @@ const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 })
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+}
 
 export const metadata: Metadata = {
   title: "Lumina — Agendamentos para salões",
@@ -30,7 +37,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("font-sans antialiased", fontMono.variable, geist.variable)}
     >
-      <body>
+      <body className="min-h-svh overflow-x-hidden">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

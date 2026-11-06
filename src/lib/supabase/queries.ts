@@ -5,6 +5,7 @@ import {
   MOCK_SERVICES,
   MOCK_WORKING_HOURS,
 } from "@/lib/mock-data"
+import { mergeCustomStaffIntoList } from "@/lib/staff-store"
 import { createClient } from "@/lib/supabase/server"
 import type {
   Appointment,
@@ -47,12 +48,13 @@ export async function getSalonData(slug?: string): Promise<{
           appointments: [],
         }
       }
+      const merged = mergeCustomStaffIntoList(MOCK_PROFILES, MOCK_WORKING_HOURS)
       return {
         salon: MOCK_SALON,
-        profiles: MOCK_PROFILES,
-        staff: MOCK_PROFILES.filter((p) => p.role === "STAFF"),
+        profiles: merged.profiles,
+        staff: merged.profiles.filter((p) => p.role === "STAFF"),
         services: MOCK_SERVICES,
-        workingHours: MOCK_WORKING_HOURS,
+        workingHours: merged.workingHours,
         appointments: MOCK_APPOINTMENTS,
       }
     }
@@ -79,7 +81,7 @@ export async function getSalonData(slug?: string): Promise<{
         .order("date_time", { ascending: true }),
     ])
 
-    const profiles: Profile[] =
+    const rawProfiles: Profile[] =
       profilesRes.data?.map((row) => ({
         id: row.id,
         salon_id: row.salon_id,
@@ -87,12 +89,21 @@ export async function getSalonData(slug?: string): Promise<{
         email: row.email,
         role: row.role,
         avatar_url: row.avatar_url,
+        phone: row.phone ?? undefined,
+        specialty: row.specialty ?? undefined,
+        document: row.document ?? undefined,
+        compensation_type: row.compensation_type ?? undefined,
+        commission_rate:
+          row.commission_rate !== undefined && row.commission_rate !== null
+            ? Number(row.commission_rate)
+            : undefined,
+        fixed_salary:
+          row.fixed_salary !== undefined && row.fixed_salary !== null
+            ? Number(row.fixed_salary)
+            : undefined,
       })) ?? MOCK_PROFILES
 
-    const staffList = profiles.filter((p) => p.role === "STAFF")
-    const effectiveStaff = staffList.length > 0 ? staffList : profiles
-
-    const staffIds = profiles.map((p) => p.id)
+    const staffIds = rawProfiles.map((p) => p.id)
     const workingHoursRes =
       staffIds.length > 0
         ? await supabase
@@ -102,7 +113,7 @@ export async function getSalonData(slug?: string): Promise<{
             .order("day_of_week", { ascending: true })
         : { data: [] }
 
-    const workingHours: WorkingHours[] =
+    const rawWorkingHours: WorkingHours[] =
       workingHoursRes.data?.map((row) => ({
         id: row.id,
         staff_id: row.staff_id,
@@ -112,6 +123,10 @@ export async function getSalonData(slug?: string): Promise<{
         pause_start: trimTime(row.pause_start),
         pause_end: trimTime(row.pause_end),
       })) ?? MOCK_WORKING_HOURS
+
+    const merged = mergeCustomStaffIntoList(rawProfiles, rawWorkingHours)
+    const staffList = merged.profiles.filter((p) => p.role === "STAFF")
+    const effectiveStaff = staffList.length > 0 ? staffList : merged.profiles
 
     const services: Service[] =
       servicesRes.data?.map((row) => ({
@@ -137,21 +152,21 @@ export async function getSalonData(slug?: string): Promise<{
 
     return {
       salon,
-      profiles,
+      profiles: merged.profiles,
       staff: effectiveStaff,
       services,
-      workingHours,
+      workingHours: merged.workingHours,
       appointments,
     }
   } catch {
+    const merged = mergeCustomStaffIntoList(MOCK_PROFILES, MOCK_WORKING_HOURS)
     return {
       salon: slug && slug !== MOCK_SALON.slug ? null : MOCK_SALON,
-      profiles: MOCK_PROFILES,
-      staff: MOCK_PROFILES.filter((p) => p.role === "STAFF"),
+      profiles: merged.profiles,
+      staff: merged.profiles.filter((p) => p.role === "STAFF"),
       services: MOCK_SERVICES,
-      workingHours: MOCK_WORKING_HOURS,
+      workingHours: merged.workingHours,
       appointments: MOCK_APPOINTMENTS,
     }
   }
 }
-

@@ -2,6 +2,8 @@ export type UserRole = "ADMIN" | "STAFF"
 
 export type AppointmentStatus = "CONFIRMED" | "COMPLETED" | "CANCELLED"
 
+export type CompensationType = "COMMISSION" | "SALARY" | "HYBRID"
+
 export interface Profile {
   id: string
   salon_id: string
@@ -9,6 +11,12 @@ export interface Profile {
   email: string
   role: UserRole
   avatar_url: string | null
+  phone?: string | null
+  specialty?: string | null
+  document?: string | null
+  compensation_type?: CompensationType
+  commission_rate?: number
+  fixed_salary?: number
 }
 
 export interface Salon {

@@ -22,6 +22,11 @@ export const MOCK_PROFILES: Profile[] = [
     email: "marina@lumina.studio",
     role: "ADMIN",
     avatar_url: null,
+    phone: "(11) 98888-0101",
+    specialty: "Gestora & Hair Stylist",
+    compensation_type: "SALARY",
+    commission_rate: 0,
+    fixed_salary: 4500,
   },
   {
     id: "user-staff-1",
@@ -30,6 +35,11 @@ export const MOCK_PROFILES: Profile[] = [
     email: "camila@lumina.studio",
     role: "STAFF",
     avatar_url: null,
+    phone: "(11) 97777-1020",
+    specialty: "Especialista em Cortes & Coloração",
+    compensation_type: "COMMISSION",
+    commission_rate: 50,
+    fixed_salary: 0,
   },
   {
     id: "user-staff-2",
@@ -38,6 +48,11 @@ export const MOCK_PROFILES: Profile[] = [
     email: "diego@lumina.studio",
     role: "STAFF",
     avatar_url: null,
+    phone: "(11) 96666-3040",
+    specialty: "Master Barber",
+    compensation_type: "HYBRID",
+    commission_rate: 30,
+    fixed_salary: 2000,
   },
   {
     id: "user-staff-3",
@@ -46,6 +61,11 @@ export const MOCK_PROFILES: Profile[] = [
     email: "helena@lumina.studio",
     role: "STAFF",
     avatar_url: null,
+    phone: "(11) 95555-5060",
+    specialty: "Nail Designer & Spa",
+    compensation_type: "SALARY",
+    commission_rate: 0,
+    fixed_salary: 2600,
   },
 ]
 

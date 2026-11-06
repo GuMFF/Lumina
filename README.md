@@ -6,6 +6,15 @@ O **Lumina Studio** é uma plataforma web moderna (SaaS) voltada para a gestão 
 
 ## Histórico de Atualizações (Changelog)
 
+### 06/11/2026 — Cadastro de Funcionários (Comissão/Salário) e Responsividade Mobile & Tablet
+- **Criação e Perfil de Funcionários (`/dashboard/equipe` e `/api/staff`):**
+  - Cadastro de novos profissionais com **upload de foto de perfil** (ou URL), nome, e-mail, WhatsApp, cargo/especialidade e documento (`CPF`).
+  - **Regime de Remuneração dos Cortes:** Opção de configurar cada funcionário como **Comissionado (`%`)**, **Assalariado Fixo (`R$`)** ou **Híbrido (`Salário Fixo + % de Comissão`)**, com cálculo em tempo real do faturamento gerado nos cortes e valor total a receber.
+  - Geração automática da grade semanal de horários (`working_hours`) e exibição da foto e especialidade na página pública de agendamento (`/agendar/lumina`).
+- **Responsividade Completa para Celulares e Tablets:**
+  - **Bottom Navigation Bar** fixa para navegação rápida com o polegar em celulares e tablets (`lg:hidden`) + cabeçalho *sticky* com troca rápida de perfil (`ADMIN` / `STAFF`).
+  - **Layouts Adaptativos:** Tabelas de serviços e logs de auditoria convertidas automaticamente em cards empilhados no celular (`md:hidden`), carrossel horizontal de profissionais na aba de equipe e grade adaptativa de horários no assistente de agendamento.
+
 ### 04/11/2026 — Identidade Visual, Light/Dark Mode e Autenticação Segura (OWASP)
 - **Nova Paleta de Cores:** Atualização visual completa combinando **Rose Terracota (`#BE185D`)**, **Dourado Âmbar (`#D97706`)** e **Areia Marfim / Café (`#FAF8F5` / `#1C1917`)**.
 - **White & Dark Mode:** Adição do seletor de tema (`ThemeToggle`) em todas as páginas (Home, Painel Administrativo e Agendamento Público), além do atalho na tecla `D`.
