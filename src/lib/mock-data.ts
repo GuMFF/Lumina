@@ -12,6 +12,28 @@ export const MOCK_SALON: Salon = {
   slug: "lumina",
   logo_url: null,
   phone: "(11) 98888-0101",
+  business_type: "SALON",
+  tagline: "Beleza, cortes & bem-estar sob medida",
+  bio: "Espaço especializado em cortes modernos, colorimetria, barbearia clássica e nail spa com atendimento personalizado.",
+  cover_url: null,
+  accent_color: "rose",
+  address: "Av. Paulista, 1450 - Conj. 32, Bela Vista",
+  city: "São Paulo - SP",
+  instagram: "@lumina.studio",
+  email: "contato@lumina.studio",
+  opening_hours_text: "Seg a Sáb · 09:00 às 19:00",
+  welcome_message:
+    "Escolha seu serviço favorito abaixo e garanta seu horário em poucos cliques.",
+  cancellation_policy:
+    "Cancelamentos ou reagendamentos podem ser feitos com até 2 horas de antecedência. Tolerância de atraso de 10 minutos.",
+  payment_methods: [
+    "PIX",
+    "Cartão de Crédito",
+    "Cartão de Débito",
+    "Dinheiro",
+  ],
+  allow_any_staff: true,
+  booking_horizon_days: 14,
 }
 
 export const MOCK_PROFILES: Profile[] = [
@@ -77,6 +99,9 @@ export const MOCK_SERVICES: Service[] = [
     description: "Corte, lavagem e finalização com consultoria de estilo.",
     price: 120,
     duration_minutes: 60,
+    category: "Cabelo",
+    featured: true,
+    active: true,
   },
   {
     id: "svc-2",
@@ -85,6 +110,9 @@ export const MOCK_SERVICES: Service[] = [
     description: "Toalha quente, navalha e hidratação da barba.",
     price: 70,
     duration_minutes: 45,
+    category: "Barbearia",
+    featured: false,
+    active: true,
   },
   {
     id: "svc-3",
@@ -93,6 +121,9 @@ export const MOCK_SERVICES: Service[] = [
     description: "Cutilagem, esmaltação e hidratação das mãos.",
     price: 55,
     duration_minutes: 45,
+    category: "Unhas & Spa",
+    featured: false,
+    active: true,
   },
   {
     id: "svc-4",
@@ -101,6 +132,9 @@ export const MOCK_SERVICES: Service[] = [
     description: "Esfoliação, hidratação e esmaltação dos pés.",
     price: 80,
     duration_minutes: 60,
+    category: "Unhas & Spa",
+    featured: false,
+    active: true,
   },
   {
     id: "svc-5",
@@ -108,7 +142,11 @@ export const MOCK_SERVICES: Service[] = [
     title: "Coloração",
     description: "Coloração profissional com tratamento de brilho.",
     price: 220,
+    promo_price: 189,
     duration_minutes: 120,
+    category: "Colorimetria",
+    featured: true,
+    active: true,
   },
 ]
 

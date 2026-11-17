@@ -4,6 +4,15 @@ export type AppointmentStatus = "CONFIRMED" | "COMPLETED" | "CANCELLED"
 
 export type CompensationType = "COMMISSION" | "SALARY" | "HYBRID"
 
+export type BusinessType =
+  | "SALON"
+  | "BARBERSHOP"
+  | "AESTHETICS"
+  | "NAILS"
+  | "LASH_BROW"
+
+export type AccentTheme = "rose" | "amber" | "emerald" | "violet" | "stone"
+
 export interface Profile {
   id: string
   salon_id: string
@@ -25,6 +34,21 @@ export interface Salon {
   slug: string
   logo_url: string | null
   phone: string
+  business_type?: BusinessType
+  tagline?: string | null
+  bio?: string | null
+  cover_url?: string | null
+  accent_color?: AccentTheme
+  address?: string | null
+  city?: string | null
+  instagram?: string | null
+  email?: string | null
+  opening_hours_text?: string | null
+  welcome_message?: string | null
+  cancellation_policy?: string | null
+  payment_methods?: string[]
+  allow_any_staff?: boolean
+  booking_horizon_days?: number
 }
 
 export interface Service {
@@ -34,6 +58,11 @@ export interface Service {
   description: string
   price: number
   duration_minutes: number
+  category?: string
+  image_url?: string | null
+  promo_price?: number | null
+  featured?: boolean
+  active?: boolean
 }
 
 export interface WorkingHours {

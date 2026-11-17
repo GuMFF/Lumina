@@ -4,12 +4,12 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   CalendarDays,
-  Copy,
+  ExternalLink,
   KeyRound,
-  QrCode,
   Scissors,
   ShieldCheck,
   Sparkles,
+  Store,
   Users,
   X,
 } from "lucide-react"
@@ -28,23 +28,23 @@ export const NAV_ITEMS = [
   },
   {
     href: "/dashboard/servicos",
-    label: "Serviços",
-    shortLabel: "Serviços",
+    label: "Catálogo & Serviços",
+    shortLabel: "Catálogo",
     icon: Scissors,
     roles: ["ADMIN"] as UserRole[],
   },
   {
     href: "/dashboard/equipe",
-    label: "Equipe",
+    label: "Equipe & Comissões",
     shortLabel: "Equipe",
     icon: Users,
     roles: ["ADMIN"] as UserRole[],
   },
   {
     href: "/dashboard/divulgacao",
-    label: "Link & QR Code",
-    shortLabel: "QR Code",
-    icon: QrCode,
+    label: "Estabelecimento & Link",
+    shortLabel: "Meu Salão",
+    icon: Store,
     roles: ["ADMIN"] as UserRole[],
   },
   {
@@ -60,6 +60,8 @@ interface SidebarProps {
   userRole: UserRole
   userName: string
   salonName: string
+  salonSlug?: string
+  salonLogoUrl?: string | null
   onRoleChange?: (role: UserRole) => void
   onNavigate?: () => void
 }
@@ -68,6 +70,8 @@ export function Sidebar({
   userRole,
   userName,
   salonName,
+  salonSlug = "lumina",
+  salonLogoUrl,
   onRoleChange,
   onNavigate,
 }: SidebarProps) {
@@ -77,16 +81,25 @@ export function Sidebar({
   return (
     <aside className="flex h-full w-72 max-w-[85vw] flex-col border-r border-stone-200/80 bg-white/95 backdrop-blur-xl transition-colors lg:w-64 dark:border-stone-800 dark:bg-stone-950/95">
       <div className="flex items-center justify-between gap-3 px-5 py-5">
-        <div className="flex items-center gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-rose-700 to-amber-600 text-white shadow-lg shadow-rose-700/20">
-            <Sparkles className="size-5" />
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-rose-700 to-amber-600 text-white shadow-lg shadow-rose-700/20">
+            {salonLogoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={salonLogoUrl}
+                alt={salonName}
+                className="size-full object-cover"
+              />
+            ) : (
+              <Sparkles className="size-5" />
+            )}
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold tracking-tight text-stone-900 dark:text-stone-50">
               {salonName}
             </p>
-            <p className="text-xs text-stone-500 dark:text-stone-400">
-              Painel de agendamentos
+            <p className="truncate font-mono text-[11px] text-stone-500 dark:text-stone-400">
+              /agendar/{salonSlug}
             </p>
           </div>
         </div>
@@ -133,7 +146,9 @@ export function Sidebar({
             {userName}
           </p>
           <p className="text-xs text-amber-700 dark:text-amber-400">
-            {userRole === "ADMIN" ? "Administrador" : "Prestador"}
+            {userRole === "ADMIN"
+              ? "Dono do Estabelecimento"
+              : "Profissional da Equipe"}
           </p>
         </div>
         {onRoleChange ? (
@@ -150,19 +165,19 @@ export function Sidebar({
                     : "text-stone-500 dark:text-stone-400"
                 )}
               >
-                {role}
+                {role === "ADMIN" ? "DONO (ADMIN)" : "EQUIPE"}
               </button>
             ))}
           </div>
         ) : null}
         <div className="flex items-center justify-between pt-1">
           <Link
-            href="/agendar/lumina"
+            href={`/agendar/${salonSlug}`}
             onClick={onNavigate}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-rose-700 hover:underline dark:text-rose-400"
           >
-            <Copy className="size-3" />
-            Página pública
+            <ExternalLink className="size-3" />
+            Ver vitrine pública
           </Link>
           <Link
             href="/login"

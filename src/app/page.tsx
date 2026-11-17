@@ -3,28 +3,36 @@ import {
   ArrowRight,
   CalendarCheck,
   KeyRound,
-  QrCode,
   Scissors,
   ShieldCheck,
+  Store,
 } from "lucide-react"
 
 import { ThemeToggle } from "@/components/theme-toggle"
+import { getSalonData } from "@/lib/supabase/queries"
 
-export default function HomePage() {
+export const dynamic = "force-dynamic"
+
+export default async function HomePage() {
+  const { salon } = await getSalonData()
+  const activeSlug = salon?.slug ?? "lumina"
+  const activeName = salon?.name ?? "Lumina Studio"
+
   return (
     <div className="min-h-svh bg-stone-50 text-stone-900 transition-colors dark:bg-stone-950 dark:text-stone-50">
       <div className="mx-auto flex max-w-3xl flex-col gap-8 px-6 py-16">
         <div className="flex items-start justify-between gap-4">
           <div>
             <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
-              SaaS de agendamento · Segurança OWASP
+              SaaS de Agendamento · Personalizável · Segurança OWASP
             </span>
             <h1 className="mt-3 text-4xl font-semibold tracking-tight">
-              Lumina Studio
+              {activeName}
             </h1>
             <p className="mt-3 max-w-xl text-stone-600 dark:text-stone-400">
-              Painel administrativo com autenticação segura (OWASP), RBAC e página
-              pública de agendamento em passo a passo.
+              Plataforma completa para donos de salões, barbearias e clínicas
+              de estética com link personalizado, catálogo sob medida, gestão de
+              comissões e autenticação segura (OWASP).
             </p>
           </div>
           <ThemeToggle />
@@ -39,36 +47,36 @@ export default function HomePage() {
             Entrar / Criar Conta
           </Link>
           <Link
-            href="/dashboard/agenda"
+            href="/dashboard/divulgacao"
             className="inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-sm font-medium text-stone-800 hover:bg-stone-100 dark:border-stone-800 dark:bg-stone-900 dark:text-stone-100"
           >
-            Abrir painel
+            Personalizar Estabelecimento
             <ArrowRight className="size-4" />
           </Link>
           <Link
-            href="/agendar/lumina"
+            href={`/agendar/${activeSlug}`}
             className="inline-flex items-center gap-2 rounded-xl border border-amber-300/80 bg-amber-50/70 px-4 py-2.5 text-sm font-medium text-stone-800 hover:bg-amber-100/70 dark:border-amber-800/60 dark:bg-stone-900 dark:text-stone-100 dark:hover:bg-stone-800"
           >
-            Agendar como cliente
+            Ver Catálogo Público (/agendar/{activeSlug})
           </Link>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
           {[
             {
-              icon: CalendarCheck,
-              title: "Agenda",
-              text: "Cards por data, profissional e status.",
+              icon: Store,
+              title: "Perfil & Link Personalizado",
+              text: "Customize o link (/agendar/sua-marca), logo, capa, cores, endereço, pagamentos e regras.",
             },
             {
               icon: Scissors,
-              title: "Serviços e equipe",
-              text: "CRUD de serviços e horários de trabalho.",
+              title: "Catálogo Sob Medida & Equipe",
+              text: "Categorias, fotos, promoções, destaques e comissões/salários da equipe.",
             },
             {
-              icon: QrCode,
-              title: "Divulgação",
-              text: "Link público /agendar/lumina e QR Code.",
+              icon: CalendarCheck,
+              title: "Agenda & Autoatendimento 24h",
+              text: "Clientes agendam em 4 passos pelo celular com comprovante direto no WhatsApp.",
             },
             {
               icon: ShieldCheck,
@@ -84,7 +92,9 @@ export default function HomePage() {
                 <item.icon className="size-5" />
               </span>
               <p className="font-medium">{item.title}</p>
-              <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">{item.text}</p>
+              <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+                {item.text}
+              </p>
             </div>
           ))}
         </div>

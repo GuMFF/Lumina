@@ -31,8 +31,27 @@ export function DashboardShell({
   const router = useRouter()
   const [role, setRole] = useState<UserRole>("ADMIN")
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [salonState, setSalonState] = useState<Salon>(
+    initialSalon ?? MOCK_SALON
+  )
 
-  const salon = initialSalon ?? MOCK_SALON
+  useEffect(() => {
+    if (initialSalon) {
+      setSalonState(initialSalon)
+    }
+  }, [initialSalon])
+
+  useEffect(() => {
+    function onSalonUpdated(event: Event) {
+      const custom = event as CustomEvent<Salon | undefined>
+      if (custom.detail) {
+        setSalonState((prev) => ({ ...prev, ...custom.detail }))
+      }
+    }
+    window.addEventListener("salon-updated", onSalonUpdated)
+    return () => window.removeEventListener("salon-updated", onSalonUpdated)
+  }, [])
+
   const profiles =
     initialProfiles && initialProfiles.length > 0
       ? initialProfiles
@@ -79,7 +98,9 @@ export function DashboardShell({
         <Sidebar
           userRole={role}
           userName={profile?.name ?? "Admin"}
-          salonName={salon.name}
+          salonName={salonState.name}
+          salonSlug={salonState.slug}
+          salonLogoUrl={salonState.logo_url}
           onRoleChange={handleRoleChange}
         />
       </div>
@@ -97,7 +118,9 @@ export function DashboardShell({
             <Sidebar
               userRole={role}
               userName={profile?.name ?? "Admin"}
-              salonName={salon.name}
+              salonName={salonState.name}
+              salonSlug={salonState.slug}
+              salonLogoUrl={salonState.logo_url}
               onRoleChange={handleRoleChange}
               onNavigate={() => setMobileOpen(false)}
             />
@@ -119,7 +142,7 @@ export function DashboardShell({
             >
               <Menu className="size-4" />
             </button>
-            <p className="truncate text-sm font-semibold">{salon.name}</p>
+            <p className="truncate text-sm font-semibold">{salonState.name}</p>
           </div>
 
           <div className="flex shrink-0 items-center gap-1.5">
@@ -136,7 +159,7 @@ export function DashboardShell({
                       : "text-stone-500"
                   )}
                 >
-                  {r}
+                  {r === "ADMIN" ? "DONO" : "EQUIPE"}
                 </button>
               ))}
             </div>

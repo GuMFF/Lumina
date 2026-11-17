@@ -5,10 +5,17 @@ import {
   MOCK_SERVICES,
   MOCK_WORKING_HOURS,
 } from "@/lib/mock-data"
+import {
+  enrichSalonWithCustomizations,
+  matchesKnownSalonSlug,
+  mergeCustomServicesIntoList,
+} from "@/lib/salon-store"
 import { mergeCustomStaffIntoList } from "@/lib/staff-store"
 import { createClient } from "@/lib/supabase/server"
 import type {
+  AccentTheme,
   Appointment,
+  BusinessType,
   Profile,
   Salon,
   Service,
@@ -31,14 +38,30 @@ export async function getSalonData(slug?: string): Promise<{
   try {
     const supabase = await createClient()
 
-    const salonQuery = slug
-      ? supabase.from("salons").select("*").eq("slug", slug).maybeSingle()
-      : supabase.from("salons").select("*").limit(1).maybeSingle()
+    let { data: salonRow, error: salonError } = slug
+      ? await supabase.from("salons").select("*").eq("slug", slug).maybeSingle()
+      : await supabase.from("salons").select("*").limit(1).maybeSingle()
 
-    const { data: salonRow, error: salonError } = await salonQuery
+    // Se o dono personalizou o slug em memória ou se buscou por um slug alternativo/anterior,
+    // busca o estabelecimento principal caso a query por slug exato não retorne linha
+    if ((!salonRow || salonError) && slug) {
+      const fallbackRes = await supabase
+        .from("salons")
+        .select("*")
+        .limit(1)
+        .maybeSingle()
+
+      if (
+        fallbackRes.data &&
+        matchesKnownSalonSlug(slug, fallbackRes.data.slug)
+      ) {
+        salonRow = fallbackRes.data
+        salonError = null
+      }
+    }
 
     if (salonError || !salonRow) {
-      if (slug && slug !== MOCK_SALON.slug) {
+      if (slug && !matchesKnownSalonSlug(slug, MOCK_SALON.slug)) {
         return {
           salon: null,
           profiles: [],
@@ -50,22 +73,48 @@ export async function getSalonData(slug?: string): Promise<{
       }
       const merged = mergeCustomStaffIntoList(MOCK_PROFILES, MOCK_WORKING_HOURS)
       return {
-        salon: MOCK_SALON,
+        salon: enrichSalonWithCustomizations(MOCK_SALON),
         profiles: merged.profiles,
         staff: merged.profiles.filter((p) => p.role === "STAFF"),
-        services: MOCK_SERVICES,
+        services: mergeCustomServicesIntoList(MOCK_SERVICES),
         workingHours: merged.workingHours,
         appointments: MOCK_APPOINTMENTS,
       }
     }
 
-    const salon: Salon = {
+    const rawSalon: Salon = {
       id: salonRow.id,
       name: salonRow.name,
       slug: salonRow.slug,
       logo_url: salonRow.logo_url,
       phone: salonRow.phone,
+      business_type: (salonRow.business_type as BusinessType) ?? undefined,
+      tagline: salonRow.tagline ?? undefined,
+      bio: salonRow.bio ?? undefined,
+      cover_url: salonRow.cover_url ?? undefined,
+      accent_color: (salonRow.accent_color as AccentTheme) ?? undefined,
+      address: salonRow.address ?? undefined,
+      city: salonRow.city ?? undefined,
+      instagram: salonRow.instagram ?? undefined,
+      email: salonRow.email ?? undefined,
+      opening_hours_text: salonRow.opening_hours_text ?? undefined,
+      welcome_message: salonRow.welcome_message ?? undefined,
+      cancellation_policy: salonRow.cancellation_policy ?? undefined,
+      payment_methods: Array.isArray(salonRow.payment_methods)
+        ? salonRow.payment_methods
+        : undefined,
+      allow_any_staff:
+        typeof salonRow.allow_any_staff === "boolean"
+          ? salonRow.allow_any_staff
+          : undefined,
+      booking_horizon_days:
+        salonRow.booking_horizon_days !== undefined &&
+        salonRow.booking_horizon_days !== null
+          ? Number(salonRow.booking_horizon_days)
+          : undefined,
     }
+
+    const salon = enrichSalonWithCustomizations(rawSalon)
 
     const [profilesRes, servicesRes, appointmentsRes] = await Promise.all([
       supabase.from("profiles").select("*").eq("salon_id", salon.id),
@@ -128,7 +177,7 @@ export async function getSalonData(slug?: string): Promise<{
     const staffList = merged.profiles.filter((p) => p.role === "STAFF")
     const effectiveStaff = staffList.length > 0 ? staffList : merged.profiles
 
-    const services: Service[] =
+    const rawServices: Service[] =
       servicesRes.data?.map((row) => ({
         id: row.id,
         salon_id: row.salon_id,
@@ -136,7 +185,18 @@ export async function getSalonData(slug?: string): Promise<{
         description: row.description ?? "",
         price: Number(row.price),
         duration_minutes: Number(row.duration_minutes),
+        category: row.category ?? undefined,
+        image_url: row.image_url ?? undefined,
+        promo_price:
+          row.promo_price !== undefined && row.promo_price !== null
+            ? Number(row.promo_price)
+            : undefined,
+        featured:
+          typeof row.featured === "boolean" ? row.featured : undefined,
+        active: typeof row.active === "boolean" ? row.active : undefined,
       })) ?? MOCK_SERVICES
+
+    const services = mergeCustomServicesIntoList(rawServices)
 
     const appointments: Appointment[] =
       appointmentsRes.data?.map((row) => ({
@@ -161,10 +221,13 @@ export async function getSalonData(slug?: string): Promise<{
   } catch {
     const merged = mergeCustomStaffIntoList(MOCK_PROFILES, MOCK_WORKING_HOURS)
     return {
-      salon: slug && slug !== MOCK_SALON.slug ? null : MOCK_SALON,
+      salon:
+        slug && !matchesKnownSalonSlug(slug, MOCK_SALON.slug)
+          ? null
+          : enrichSalonWithCustomizations(MOCK_SALON),
       profiles: merged.profiles,
       staff: merged.profiles.filter((p) => p.role === "STAFF"),
-      services: MOCK_SERVICES,
+      services: mergeCustomServicesIntoList(MOCK_SERVICES),
       workingHours: merged.workingHours,
       appointments: MOCK_APPOINTMENTS,
     }

@@ -1,10 +1,21 @@
 # Lumina Studio — Sistema de Agendamento e Gestão para Salões de Beleza
 
-O **Lumina Studio** é uma plataforma web moderna (SaaS) voltada para a gestão de salões de beleza, estúdios de estética e barbearias. O sistema oferece um **painel administrativo com controle de acesso por perfil (RBAC)**, **autenticação segura seguindo padrões OWASP** e uma **página pública de autoagendamento** intuitiva para os clientes.
+O **Lumina Studio** é uma plataforma web moderna (SaaS) voltada para a gestão de salões de beleza, estúdios de estética e barbearias. O sistema oferece um **painel administrativo com controle de acesso por perfil (RBAC)**, **personalização completa do estabelecimento, link e catálogo**, **autenticação segura seguindo padrões OWASP** e uma **página pública de autoagendamento** intuitiva para os clientes.
 
 ---
 
 ## Histórico de Atualizações (Changelog)
+
+### 17/11/2026 — Personalização do Estabelecimento, Link Customizável e Catálogo Sob Medida
+- **Perfil do Estabelecimento & Identidade Visual (`/dashboard/divulgacao` e `/api/salon`):**
+  - **5 Perfis de Segmento (Presets):** Adaptação rápida para *Salão de Beleza*, *Barbearia*, *Clínica de Estética & Spa*, *Nail Studio / Esmalteria* e *Studio de Cílios & Sobrancelhas*.
+  - **Identidade Visual & Vitrine:** Personalização de nome, slogan, biografia, upload de **Logo** e **Foto de Capa (Banner)**, além de 5 paletas de destaque (*Rose Terracota*, *Dourado Âmbar*, *Esmeralda Spa*, *Lavanda Studio* e *Minimalista Noir*) com **Prévia em Tempo Real**.
+  - **Link Personalizado (`/agendar/[slug]`) & Divulgação:** Edição dinâmica da URL pública do salão com sanitização automática, atualização instantânea do **QR Code** e gerador de textos prontos para **WhatsApp** e **Bio do Instagram**.
+  - **Endereço, Pagamentos & Regras:** Configuração de endereço, cidade, WhatsApp, Instagram, horário de funcionamento, meios de pagamento aceitos (*PIX, Cartão, Dinheiro*), antecedência máxima da agenda e política de cancelamento.
+- **Catálogo Rico de Serviços (`/dashboard/servicos` e `/api/services`):**
+  - Criação e edição completa de serviços com **categorias personalizadas**, **upload de foto**, **preço promocional (De/Por)**, selo **⭐ Destaque ("Mais pedido")**, controle de visibilidade (*Ativo/Oculto*) e importação de pacotes prontos de serviços por segmento com 1 clique.
+- **Vitrine Pública do Cliente (`/agendar/[slug]`):**
+  - Cabeçalho com capa, logo, contatos, endereço e formas de pagamento do estabelecimento, filtro por categorias, busca no catálogo e botão de enviar comprovante no WhatsApp do salão após confirmar o agendamento.
 
 ### 06/11/2026 — Cadastro de Funcionários (Comissão/Salário) e Responsividade Mobile & Tablet
 - **Criação e Perfil de Funcionários (`/dashboard/equipe` e `/api/staff`):**
@@ -32,11 +43,11 @@ O **Lumina Studio** é uma plataforma web moderna (SaaS) voltada para a gestão 
 ## Funcionalidades Principais
 
 - **Painel de Agenda (`/dashboard/agenda`):** Visualização dos agendamentos agrupados por data, com filtros por status (*Confirmado*, *Concluído*, *Cancelado*) e escopo por perfil (*Admin* visualiza toda a equipe; *Staff* visualiza sua própria agenda).
-- **Catálogo de Serviços (`/dashboard/servicos`):** Cadastro e exclusão de serviços com título, descrição, preço em reais (BRL) e tempo de duração em minutos.
-- **Gestão de Equipe e Jornada (`/dashboard/equipe`):** Configuração individual dos dias e horários de expediente e intervalo de pausa de cada profissional.
-- **Divulgação & QR Code (`/dashboard/divulgacao`):** Geração automática do link público exclusivo do salão e QR Code pronto para impressão ou compartilhamento nas redes sociais.
+- **Catálogo Personalizável (`/dashboard/servicos`):** Gestão completa de serviços com categorias, fotos, preços promocionais, selo de destaque, ocultação temporária e kits prontos por segmento.
+- **Gestão de Equipe e Jornada (`/dashboard/equipe`):** Cadastro de profissionais com foto, cálculo automático de comissão/salário e configuração individual dos dias e horários de expediente.
+- **Estabelecimento, Link & QR Code (`/dashboard/divulgacao`):** Personalização do perfil do estabelecimento, link exclusivo (`/agendar/sua-marca`), identidade visual, regras de agendamento e QR Code dinâmico.
 - **Central de Segurança & Auth (`/dashboard/seguranca` e `/login`):** Gestão de sessão, ativação de 2FA (TOTP), rotação de tokens e visualização de logs de auditoria.
-- **Página Pública de Agendamento (`/agendar/[slug]`):** Fluxo passo a passo (*Wizard*) para o cliente escolher o serviço, o profissional (ou qualquer disponível), a data e o horário livre calculado automaticamente sem conflitos de agenda.
+- **Página Pública de Agendamento (`/agendar/[slug]`):** Vitrine personalizada e fluxo passo a passo (*Wizard*) para o cliente escolher serviço, profissional, data e horário livre com envio de comprovante pelo WhatsApp.
 
 ---
 

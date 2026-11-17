@@ -9,6 +9,7 @@ export default async function ServicosPage() {
   return (
     <ServicesView
       salonId={salon?.id ?? MOCK_SALON.id}
+      salon={salon ?? MOCK_SALON}
       initialServices={services}
     />
   )
